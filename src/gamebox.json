@@ -1,0 +1,570 @@
+{
+    "game": {
+        "pk": 2
+    },
+    "players": [
+        {
+            "pk": 1,
+            "name": "Lavron",
+            "coins": 10,
+            "color": "blue"
+        },
+        {
+            "pk": 2,
+            "name": "Yaroslav",
+            "coins": 10,
+            "color": "Red",
+            "traders": [
+                {
+                    "pk": 1,
+                    "sector": 1
+                }
+            ]
+        }
+    ],
+    "sectors": [
+        {
+            "pk": 1,
+            "name": "Vegetables",
+            "description": ""
+        },
+        {
+            "pk": 2,
+            "name": "Fruits",
+            "description": ""
+        },
+        {
+            "pk": 3,
+            "name": "Dairy",
+            "description": ""
+        },
+        {
+            "pk": 4,
+            "name": "Fish",
+            "description": ""
+        },
+        {
+            "pk": 5,
+            "name": "Meat",
+            "description": ""
+        },
+        {
+            "pk": 6,
+            "name": "Household",
+            "description": ""
+        },
+        {
+            "pk": 7,
+            "name": "Illegal",
+            "description": ""
+        }
+    ],
+    "product_cards": [
+        {
+            "pk": 1,
+            "name": "Onion",
+            "description": "",
+            "image": "onion.svg",
+            "is_legal": true,
+            "sector": {
+                "pk": 1,
+                "name": "Vegetables",
+                "description": ""
+            },
+            "sell_price": 4,
+            "buy_price": 2
+        },
+        {
+            "pk": 2,
+            "name": "Zucchini",
+            "description": "",
+            "image": "zucchini.svg",
+            "is_legal": true,
+            "sector": {
+                "pk": 1,
+                "name": "Vegetables",
+                "description": ""
+            },
+            "sell_price": 6,
+            "buy_price": 3
+        },
+        {
+            "pk": 3,
+            "name": "Tomato",
+            "description": "",
+            "image": "tomato.svg",
+            "is_legal": true,
+            "sector": {
+                "pk": 1,
+                "name": "Vegetables",
+                "description": ""
+            },
+            "sell_price": 9,
+            "buy_price": 5
+        },
+        {
+            "pk": 4,
+            "name": "Apples",
+            "description": "",
+            "image": "apples.svg",
+            "is_legal": true,
+            "sector": {
+                "pk": 2,
+                "name": "Fruits",
+                "description": ""
+            },
+            "sell_price": 4,
+            "buy_price": 2
+        },
+        {
+            "pk": 5,
+            "name": "Grapes",
+            "description": "",
+            "image": "grapes.svg",
+            "is_legal": true,
+            "sector": {
+                "pk": 2,
+                "name": "Fruits",
+                "description": ""
+            },
+            "sell_price": 6,
+            "buy_price": 3
+        },
+        {
+            "pk": 6,
+            "name": "Strawberries",
+            "description": "",
+            "image": "strawberries.svg",
+            "is_legal": true,
+            "sector": {
+                "pk": 2,
+                "name": "Fruits",
+                "description": ""
+            },
+            "sell_price": 9,
+            "buy_price": 5
+        },
+        {
+            "pk": 7,
+            "name": "Milk",
+            "description": "",
+            "image": "milk.svg",
+            "is_legal": true,
+            "sector": {
+                "pk": 3,
+                "name": "Dairy",
+                "description": ""
+            },
+            "sell_price": 6,
+            "buy_price": 3
+        },
+        {
+            "pk": 8,
+            "name": "Feta cheese",
+            "description": "",
+            "image": "feta_cheese.svg",
+            "is_legal": true,
+            "sector": {
+                "pk": 3,
+                "name": "Dairy",
+                "description": ""
+            },
+            "sell_price": 9,
+            "buy_price": 5
+        },
+        {
+            "pk": 9,
+            "name": "Cheese",
+            "description": "",
+            "image": "cheese.svg",
+            "is_legal": true,
+            "sector": {
+                "pk": 3,
+                "name": "Dairy",
+                "description": ""
+            },
+            "sell_price": 12,
+            "buy_price": 7
+        },
+        {
+            "pk": 10,
+            "name": "Anchovies",
+            "description": "",
+            "image": "anchovies.svg",
+            "is_legal": true,
+            "sector": {
+                "pk": 4,
+                "name": "Fish",
+                "description": ""
+            },
+            "sell_price": 6,
+            "buy_price": 3
+        },
+        {
+            "pk": 11,
+            "name": "Mackerel",
+            "description": "",
+            "image": "mackerel.svg",
+            "is_legal": true,
+            "sector": {
+                "pk": 4,
+                "name": "Fish",
+                "description": ""
+            },
+            "sell_price": 9,
+            "buy_price": 5
+        },
+        {
+            "pk": 12,
+            "name": "Salmon",
+            "description": "",
+            "image": "salmon.svg",
+            "is_legal": true,
+            "sector": {
+                "pk": 4,
+                "name": "Fish",
+                "description": ""
+            },
+            "sell_price": 12,
+            "buy_price": 7
+        },
+        {
+            "pk": 13,
+            "name": "Chicken",
+            "description": "",
+            "image": "chicken.svg",
+            "is_legal": true,
+            "sector": {
+                "pk": 5,
+                "name": "Meat",
+                "description": ""
+            },
+            "sell_price": 10,
+            "buy_price": 5
+        },
+        {
+            "pk": 14,
+            "name": "Pork",
+            "description": "",
+            "image": "pork.svg",
+            "is_legal": true,
+            "sector": {
+                "pk": 5,
+                "name": "Meat",
+                "description": ""
+            },
+            "sell_price": 13,
+            "buy_price": 7
+        },
+        {
+            "pk": 15,
+            "name": "Sausage",
+            "description": "",
+            "image": "sausage.svg",
+            "is_legal": true,
+            "sector": {
+                "pk": 5,
+                "name": "Meat",
+                "description": ""
+            },
+            "sell_price": 16,
+            "buy_price": 9
+        },
+        {
+            "pk": 16,
+            "name": "Gloves",
+            "description": "",
+            "image": "gloves.svg",
+            "is_legal": true,
+            "sector": {
+                "pk": 6,
+                "name": "Household",
+                "description": ""
+            },
+            "sell_price": 12,
+            "buy_price": 7
+        },
+        {
+            "pk": 17,
+            "name": "Hats",
+            "description": "",
+            "image": "hats.svg",
+            "is_legal": true,
+            "sector": {
+                "pk": 6,
+                "name": "Household",
+                "description": ""
+            },
+            "sell_price": 15,
+            "buy_price": 9
+        },
+        {
+            "pk": 18,
+            "name": "Quilts",
+            "description": "",
+            "image": "quilts.svg",
+            "is_legal": true,
+            "sector": {
+                "pk": 6,
+                "name": "Household",
+                "description": ""
+            },
+            "sell_price": 18,
+            "buy_price": 10
+        },
+        {
+            "pk": 19,
+            "name": "Cigarettes",
+            "description": "",
+            "image": "cigarettes.svg",
+            "is_legal": false,
+            "sector": {
+                "pk": 7,
+                "name": "Illegal",
+                "description": ""
+            },
+            "sell_price": 9,
+            "buy_price": 4
+        },
+        {
+            "pk": 20,
+            "name": "Beer",
+            "description": "",
+            "image": "beer.svg",
+            "is_legal": false,
+            "sector": {
+                "pk": 7,
+                "name": "Illegal",
+                "description": ""
+            },
+            "sell_price": 12,
+            "buy_price": 5
+        },
+        {
+            "pk": 21,
+            "name": "Wine",
+            "description": "",
+            "image": "wine.svg",
+            "is_legal": false,
+            "sector": {
+                "pk": 7,
+                "name": "Illegal",
+                "description": ""
+            },
+            "sell_price": 15,
+            "buy_price": 6
+        },
+        {
+            "pk": 22,
+            "name": "Vodka",
+            "description": "",
+            "image": "vodka.svg",
+            "is_legal": false,
+            "sector": {
+                "pk": 7,
+                "name": "Illegal",
+                "description": ""
+            },
+            "sell_price": 19,
+            "buy_price": 7
+        },
+        {
+            "pk": 23,
+            "name": "Drugs",
+            "description": "",
+            "image": "drugs.svg",
+            "is_legal": false,
+            "sector": {
+                "pk": 7,
+                "name": "Illegal",
+                "description": ""
+            },
+            "sell_price": 25,
+            "buy_price": 10
+        }
+    ],
+    "event_cards": [
+        {
+            "pk": 1,
+            "name": "Federal police",
+            "description": "Confiscate illegal goods plus a fine.",
+            "location": "deck",
+            "fortune": "negative",
+            "target": "sector",
+            "confiscation": true,
+            "protection": false,
+            "player_extra_profit": null,
+            "trader_extra_profit": -5,
+            "product_extra_profit": null,
+            "trader_is_active": false
+        },
+        {
+            "pk": 2,
+            "name": "Mafia ('brothers') karabas and stas",
+            "description": "2 coins of donations for each seller.",
+            "location": "deck",
+            "fortune": "negative",
+            "target": "sector",
+            "confiscation": false,
+            "protection": false,
+            "player_extra_profit": null,
+            "trader_extra_profit": -2,
+            "product_extra_profit": null,
+            "trader_is_active": true
+        },
+        {
+            "pk": 3,
+            "name": "Prosecutor's office",
+            "description": "Confiscation of illegal goods plus a fine.",
+            "location": "deck",
+            "fortune": "negative",
+            "target": "sector",
+            "confiscation": true,
+            "protection": false,
+            "player_extra_profit": null,
+            "trader_extra_profit": -2,
+            "product_extra_profit": null,
+            "trader_is_active": false
+        },
+        {
+            "pk": 4,
+            "name": "Sanitary epidemiological station",
+            "description": "2 coins of donations for each seller.",
+            "location": "deck",
+            "fortune": "negative",
+            "target": "sector",
+            "confiscation": false,
+            "protection": false,
+            "player_extra_profit": null,
+            "trader_extra_profit": -2,
+            "product_extra_profit": null,
+            "trader_is_active": true
+        },
+        {
+            "pk": 5,
+            "name": "Firefighters",
+            "description": "2 coins of donations for each seller.",
+            "location": "deck",
+            "fortune": "negative",
+            "target": "sector",
+            "confiscation": false,
+            "protection": false,
+            "player_extra_profit": null,
+            "trader_extra_profit": -2,
+            "product_extra_profit": null,
+            "trader_is_active": true
+        },
+        {
+            "pk": 6,
+            "name": "Local police officer",
+            "description": "2 coins of donations for each seller.",
+            "location": "deck",
+            "fortune": "negative",
+            "target": "sector",
+            "confiscation": true,
+            "protection": false,
+            "player_extra_profit": null,
+            "trader_extra_profit": -2,
+            "product_extra_profit": null,
+            "trader_is_active": false
+        },
+        {
+            "pk": 7,
+            "name": "Beggars",
+            "description": "-1 to the selling price.",
+            "location": "deck",
+            "fortune": "negative",
+            "target": "sector",
+            "confiscation": false,
+            "protection": false,
+            "player_extra_profit": null,
+            "trader_extra_profit": null,
+            "product_extra_profit": -1,
+            "trader_is_active": true
+        },
+        {
+            "pk": 8,
+            "name": "Addicts (narcos)",
+            "description": "-1 to the selling price.",
+            "location": "deck",
+            "fortune": "negative",
+            "target": "sector",
+            "confiscation": false,
+            "protection": false,
+            "player_extra_profit": null,
+            "trader_extra_profit": null,
+            "product_extra_profit": -1,
+            "trader_is_active": true
+        },
+        {
+            "pk": 9,
+            "name": "Priests (monks)",
+            "description": "2 coins of donations for each seller.",
+            "location": "deck",
+            "fortune": "negative",
+            "target": "sector",
+            "confiscation": false,
+            "protection": false,
+            "player_extra_profit": null,
+            "trader_extra_profit": null,
+            "product_extra_profit": -2,
+            "trader_is_active": true
+        },
+        {
+            "pk": 10,
+            "name": "Underworld protection",
+            "description": "Protection.",
+            "location": "deck",
+            "fortune": "positive",
+            "target": "trader",
+            "confiscation": false,
+            "protection": true,
+            "player_extra_profit": null,
+            "trader_extra_profit": null,
+            "product_extra_profit": null,
+            "trader_is_active": true
+        },
+        {
+            "pk": 11,
+            "name": "Regular customer",
+            "description": "Profit +2 coins.",
+            "location": "deck",
+            "fortune": "positive",
+            "target": "trader",
+            "confiscation": false,
+            "protection": false,
+            "player_extra_profit": 0,
+            "trader_extra_profit": 2,
+            "product_extra_profit": null,
+            "trader_is_active": true
+        },
+        {
+            "pk": 12,
+            "name": "Transport arrived and brought people",
+            "description": "Profit +1 from each seller.",
+            "location": "deck",
+            "fortune": "positive",
+            "target": "trader",
+            "confiscation": false,
+            "protection": false,
+            "player_extra_profit": 1,
+            "trader_extra_profit": null,
+            "product_extra_profit": null,
+            "trader_is_active": true
+        },
+        {
+            "pk": 13,
+            "name": "Porters",
+            "description": "Goods +1 from the market for free.",
+            "location": "deck",
+            "fortune": "positive",
+            "target": "trader",
+            "confiscation": false,
+            "protection": false,
+            "player_extra_profit": null,
+            "trader_extra_profit": null,
+            "product_extra_profit": null,
+            "trader_is_active": true
+        }
+    ]
+}
