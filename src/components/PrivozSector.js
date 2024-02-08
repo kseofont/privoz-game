@@ -12,6 +12,7 @@ const PrivozSector = ({ sector, gameData, setGameData, currentUser }) => {
 
     const handleConfirmAddTrader = () => {
         addTrader(gameData, setGameData, sector, currentUser);
+
         setShowAddTraderModal(false);
     };
 
@@ -20,32 +21,29 @@ const PrivozSector = ({ sector, gameData, setGameData, currentUser }) => {
     };
 
     // Filter traders belonging to the current sector
-    const sectorTraders = gameData.players.reduce((acc, player) => {
+    const sectorTraders = gameData.players.filter(player => {
+        // Check if the player has traders
         if (player.traders && player.traders.length > 0) {
-            player.traders.forEach(trader => {
-                if (trader.sector === sector.pk) {
-                    acc.push({ ...trader, parentColor: player.color });
-                }
-            });
+            // Check if any trader of the player belongs to the current sector
+            return player.traders.some(trader => trader.sector === sector.pk);
         }
-        return acc;
-    }, []);
+        return false; // Return false if the player has no traders or no trader in the current sector
+    });
 
     return (
         <div className={`sector border p-3 mb-3 ${sector.name.toLowerCase()}`}>
-            {/* Display existing traders */}
-            {sectorTraders.map(trader => (
-                <div key={trader.pk} className={`col border text-center pb-4 ${trader.parentColor.toLowerCase()}`}>
-                    <i className={`bi bi-shop-window`}></i>
-                    <p>Trader {trader.name}</p>
-                </div>
-            ))}
-            {/* If there are no traders, display the "Add Trader" button within a bordered section */}
-            {sectorTraders.length === 0 && (
-                <div className="col border text-center pb-4">
-                    <button className="btn btn-primary" onClick={handleAddTrader}>Add Trader</button>
-                </div>
-            )}
+            <h3 className="sector-title">{sector.name}</h3>
+            <div className="row gap-1">
+                {/* Display existing traders */}
+                {sectorTraders.map(trader => (
+                    <div key={trader.pk} className="col border text-center pb-4 yellow">
+                        <p>Trader {trader.name}</p>
+                        <p>Coins: {trader.coins}</p>
+                    </div>
+                ))}
+            </div>
+            {/* Button to add a new trader */}
+            <button onClick={handleAddTrader}>Add Trader</button>
             {/* Modal for adding a new trader */}
             <Modal show={showAddTraderModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>

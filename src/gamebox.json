@@ -7,7 +7,13 @@
             "pk": 1,
             "name": "Lavron",
             "coins": 10,
-            "color": "blue"
+            "color": "blue",
+            "traders": [
+                {
+                    "pk": 1,
+                    "sector": 1
+                }
+            ]
         },
         {
             "pk": 2,
