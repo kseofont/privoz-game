@@ -4,49 +4,45 @@ import { Modal, Button } from 'react-bootstrap';
 
 const PrivozSector = ({ sector, gameData, setGameData, currentUser }) => {
     const [showAddTraderModal, setShowAddTraderModal] = useState(false);
-    const [showMaxTradersModal, setShowMaxTradersModal] = useState(false);
-    const [maxTraders, setMaxTraders] = useState(gameData.players.length);
 
     const handleAddTrader = () => {
-        // Calculate the number of traders in the sector
-        const sectorTradersCount = gameData.players.reduce((count, player) => {
-            if (player.traders) {
-                return count + player.traders.filter(trader => trader.sector === sector.pk).length;
-            }
-            return count;
-        }, 0);
-
-        // Check if the maximum number of traders has been reached
-        if (sectorTradersCount >= maxTraders) {
-            setShowMaxTradersModal(true);
-        } else {
-            setShowAddTraderModal(true);
-        }
+        setShowAddTraderModal(true);
     };
 
     const handleConfirmAddTrader = () => {
         addTrader(gameData, setGameData, sector, currentUser);
+
         setShowAddTraderModal(false);
     };
 
     const handleCloseModal = () => {
         setShowAddTraderModal(false);
-        setShowMaxTradersModal(false);
     };
+
+    // Filter traders belonging to the current sector
+    // Filter traders belonging to the current sector
+    const sectorTraders = gameData.players.reduce((acc, player) => {
+        if (player.traders && player.traders.length > 0) {
+            player.traders.forEach(trader => {
+                if (trader.sector === sector.pk) {
+                    acc.push({ ...trader, parentColor: player.color });
+                }
+            });
+        }
+        return acc;
+    }, []);
 
     return (
         <div className={`sector border p-3 mb-3 ${sector.name.toLowerCase()}`}>
-            <h3 className="sector-title">{sector.name}</h3>
+
             <div className="row gap-1">
                 {/* Display existing traders */}
-                {gameData.players.map(player => (
-                    player.traders &&
-                    player.traders.filter(trader => trader.sector === sector.pk).map(trader => (
-                        <div key={trader.pk} className="col border text-center pb-4 yellow">
-                            <p>Trader {trader.name}</p>
-                            <p>Coins: {trader.coins}</p>
-                        </div>
-                    ))
+                {sectorTraders.map(trader => (
+                    <div key={trader.pk} className={`col border text-center pb-4 ${trader.parentColor.toLowerCase()}`}>
+                        <i className={`bi bi-shop-window`}></i>
+                        <p>Trader {trader.name}</p>
+
+                    </div>
                 ))}
             </div>
             {/* Button to add a new trader */}
@@ -66,21 +62,6 @@ const PrivozSector = ({ sector, gameData, setGameData, currentUser }) => {
                     </Button>
                     <Button variant="primary" onClick={handleConfirmAddTrader}>
                         Add Trader
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-            {/* Modal for informing maximum traders reached */}
-            <Modal show={showMaxTradersModal} onHide={handleCloseModal}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Maximum Traders Reached</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    Maximum number of traders ({maxTraders}) reached in this sector. You
-                    cannot add another trader.
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="primary" onClick={handleCloseModal}>
-                        OK
                     </Button>
                 </Modal.Footer>
             </Modal>
