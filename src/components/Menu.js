@@ -46,7 +46,7 @@ const Menu = ({ gameBox, gameData }) => {
             </Button>
 
             {/* Rules Modal */}
-            <Modal show={showRulesModal} onHide={handleCloseRulesModal}>
+            <Modal show={showRulesModal} onHide={handleCloseRulesModal} dialogClassName="modal-70w">
                 <Modal.Header closeButton>
                     <Modal.Title>Game Phases</Modal.Title>
                 </Modal.Header>
