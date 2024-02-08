@@ -25,7 +25,19 @@ const PrivozPage = () => {
             <div className="row">
                 <h2>Privoz Bazar</h2>
                 <div className="col-md-9">
-                    <h3>Here is the market Privoz</h3>
+
+                    <div className="game-phase">
+                        <div className="row">
+                            <div className="col phase1">
+                                <h3><span>Phase 1:</span> Choose your location for your first trader. The first trader = $0. 2nd = $10, 3d = $20...</h3>
+                            </div>
+                            <div className="col phase2 d-none">
+                                <h3><span>Phase 2:</span> urchasing Special Cards</h3>
+                                <p><span>positive cards:</span> provide protection for the seller or additional income</p>
+                                <p><span>negative cards:</span> they fine for illegal trade, seize goods, block work in a department or cause other damage</p>
+                            </div>
+                        </div>
+                    </div>
 
                     <div className="row row-cols-1 row-cols-md-2">
                         {/* Display existing traders */}

@@ -1,3 +1,4 @@
+// PrivozSector.js
 import React, { useState } from 'react';
 import addTrader from '../logic/traderLogic';
 import { Modal, Button } from 'react-bootstrap';
@@ -11,7 +12,6 @@ const PrivozSector = ({ sector, gameData, setGameData, currentUser }) => {
 
     const handleConfirmAddTrader = () => {
         addTrader(gameData, setGameData, sector, currentUser);
-
         setShowAddTraderModal(false);
     };
 
@@ -19,7 +19,6 @@ const PrivozSector = ({ sector, gameData, setGameData, currentUser }) => {
         setShowAddTraderModal(false);
     };
 
-    // Filter traders belonging to the current sector
     // Filter traders belonging to the current sector
     const sectorTraders = gameData.players.reduce((acc, player) => {
         if (player.traders && player.traders.length > 0) {
@@ -34,19 +33,19 @@ const PrivozSector = ({ sector, gameData, setGameData, currentUser }) => {
 
     return (
         <div className={`sector border p-3 mb-3 ${sector.name.toLowerCase()}`}>
-
-            <div className="row gap-1">
-                {/* Display existing traders */}
-                {sectorTraders.map(trader => (
-                    <div key={trader.pk} className={`col border text-center pb-4 ${trader.parentColor.toLowerCase()}`}>
-                        <i className={`bi bi-shop-window`}></i>
-                        <p>Trader {trader.name}</p>
-
-                    </div>
-                ))}
-            </div>
-            {/* Button to add a new trader */}
-            <button onClick={handleAddTrader}>Add Trader</button>
+            {/* Display existing traders */}
+            {sectorTraders.map(trader => (
+                <div key={trader.pk} className={`col border text-center pb-4 ${trader.parentColor.toLowerCase()}`}>
+                    <i className={`bi bi-shop-window`}></i>
+                    <p>Trader {trader.name}</p>
+                </div>
+            ))}
+            {/* If there are no traders, display the "Add Trader" button within a bordered section */}
+            {sectorTraders.length === 0 && (
+                <div className="col border text-center pb-4">
+                    <button className="btn btn-primary" onClick={handleAddTrader}>Add Trader</button>
+                </div>
+            )}
             {/* Modal for adding a new trader */}
             <Modal show={showAddTraderModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
@@ -68,5 +67,6 @@ const PrivozSector = ({ sector, gameData, setGameData, currentUser }) => {
         </div>
     );
 };
+
 
 export default PrivozSector;
