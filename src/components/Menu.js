@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-const Menu = ({ gameBox, gameData }) => {
+const Menu = ({ gameBox, gameData, eventCards }) => {
     const { players } = gameBox;
     const [showRulesModal, setShowRulesModal] = useState(false);
+    const [showEventCardsModal, setShowEventCardsModal] = useState(false); // State for event cards modal
+
 
     const handleCloseRulesModal = () => setShowRulesModal(false);
     const handleShowRulesModal = () => setShowRulesModal(true);
 
+    // Functions to show and hide the event cards modal
+    const handleShowEventCardsModal = () => setShowEventCardsModal(true);
+    const handleCloseEventCardsModal = () => setShowEventCardsModal(false);
+
+    console.log(eventCards);
 
     return (
         <div>
@@ -40,11 +47,17 @@ const Menu = ({ gameBox, gameData }) => {
                 );
             })}
 
-            {/* Button to show rules modal */}
-            <Button variant="primary" onClick={handleShowRulesModal}>
-                Rules
-            </Button>
+            <div className='d-flex gap-2'>
+                {/* Button to show rules modal */}
+                <Button variant="primary" onClick={handleShowRulesModal}>
+                    Rules
+                </Button>
 
+                {/* Button to show event cards modal */}
+                <Button variant="primary" onClick={handleShowEventCardsModal}>
+                    Event Cards
+                </Button>
+            </div>
             {/* Rules Modal */}
             <Modal show={showRulesModal} onHide={handleCloseRulesModal} dialogClassName="modal-70w">
                 <Modal.Header closeButton>
@@ -117,6 +130,92 @@ const Menu = ({ gameBox, gameData }) => {
                     </Button>
                 </Modal.Footer>
             </Modal>
+
+
+
+
+            {/* Event Cards Modal */}
+            <Modal show={showEventCardsModal} onHide={handleCloseEventCardsModal} dialogClassName="modal-70w">
+                <Modal.Header closeButton>
+                    <Modal.Title>Event Cards</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {/* Render negative cards */}
+                    <div>
+                        <h3>Negative Cards</h3>
+                        <div className="row">
+                            {eventCards
+                                .filter(card => card.fortune === 'negative')
+                                .map((card, index) => (
+                                    <div key={index} className="col-md-4 mb-3">
+                                        <div className="card">
+                                            <div className="card-body">
+                                                <h5 className="card-title">{card.name}</h5>
+                                                <p className="card-text"><strong>Description:</strong> {card.description}</p>
+                                                <p className="card-text"><strong>Location:</strong> {card.location}</p>
+                                                <p className="card-text"><strong>Fortune:</strong> {card.fortune}</p>
+                                                <p className="card-text"><strong>Quantity:</strong> {card.qty}</p>
+                                                {/* Add other properties you want to display */}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                        </div>
+                    </div>
+
+                    {/* Render positive cards */}
+                    <div>
+                        <h3>Positive Cards</h3>
+                        <div className="row">
+                            {eventCards
+                                .filter(card => card.fortune === 'positive')
+                                .map((card, index) => (
+                                    <div key={index} className="col-md-4 mb-3">
+                                        <div className="card">
+                                            <div className="card-body">
+                                                <h5 className="card-title">{card.name}</h5>
+                                                <p className="card-text"><strong>Description:</strong> {card.description}</p>
+                                                <p className="card-text"><strong>Location:</strong> {card.location}</p>
+                                                <p className="card-text"><strong>Fortune:</strong> {card.fortune}</p>
+                                                <p className="card-text"><strong>Quantity:</strong> {card.qty}</p>
+                                                {/* Add other properties you want to display */}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                        </div>
+                    </div>
+
+                    {/* Render quantity of cards in game with location "deck" and quantity > 0 */}
+                    <div>
+                        <h3>Quantity of Cards in Game</h3>
+                        <div className="row">
+                            {eventCards
+                                .filter(card => card.location === 'deck' && card.qty > 0)
+                                .map((card, index) => (
+                                    <div key={index} className="col-md-4 mb-3">
+                                        <div className="card">
+                                            <div className="card-body">
+                                                <h5 className="card-title">{card.name}</h5>
+                                                <p className="card-text"><strong>Description:</strong> {card.description}</p>
+                                                <p className="card-text"><strong>Location:</strong> {card.location}</p>
+                                                <p className="card-text"><strong>Quantity:</strong> {card.qty}</p>
+                                                {/* Add other properties you want to display */}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                        </div>
+                    </div>
+                </Modal.Body>
+
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseEventCardsModal}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
         </div>
     );
 };

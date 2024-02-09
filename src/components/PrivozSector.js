@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import addTrader from '../logic/traderLogic';
 import { Modal, Button } from 'react-bootstrap';
 import Trader from './Trader';
@@ -100,6 +100,7 @@ const PrivozSector = ({ sector, gameData, setGameData, currentUser, phaseData, s
                     </Button>
                 </Modal.Footer>
             </Modal>
+
         </div>
     );
 };

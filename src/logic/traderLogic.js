@@ -110,3 +110,44 @@ const addTrader = (gameData, setGameData, sector, currentUser, phaseData, setPha
 };
 
 export default addTrader;
+
+// Make Active Event Cards
+export const startEventCards = (gameData, qty) => {
+    // Clone the event cards array from gameData to avoid mutating the original data
+    const eventCardsArray = [...gameData.event_cards];
+
+    // Check if qty contains event cards
+    if (!qty.event_cards || !Array.isArray(qty.event_cards)) {
+        console.error('Quantity data is not an array:', qty);
+        return eventCardsArray; // Return the original event cards array
+    }
+
+    // Loop through the event cards array and update the quantities
+    eventCardsArray.forEach((eventCard) => {
+        // Find the corresponding event card quantity object in qty
+        const qtyObj = qty.event_cards.find((item) => item.pk === eventCard.pk);
+
+        // If a quantity object is found, update the quantity of the event card
+        if (qtyObj) {
+            eventCard.qty = qtyObj.qty;
+        } else {
+            // If no quantity object is found, set the quantity to 0
+            eventCard.qty = 0;
+        }
+    });
+    //  console.log('eventCardsArray', eventCardsArray);
+    // Return the updated event cards array
+    return eventCardsArray;
+};
+
+
+
+
+//Take new Event Card
+export const takeEventCard = (gameData, setGameData, currentUser) => {
+
+    console.log('gameData', gameData);
+
+    console.log('currentUser', currentUser);
+
+};

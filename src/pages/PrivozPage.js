@@ -2,22 +2,53 @@ import React, { useState, useEffect } from 'react';
 import Menu from '../components/Menu';
 import PrivozSector from '../components/PrivozSector';
 import gameBox from '../gamebox.json';
+import { Modal, Button } from 'react-bootstrap';
+import { takeEventCard, startEventCards } from '../logic/traderLogic';
+import EventCard from '../components/EventCard'; // Import the EventCard component
+
+import evcardQtyBase from "../evcardQty.json"; // Data with cards quantity
+
+
 //import axios from 'axios'; // Import axios for making HTTP requests
 
 const PrivozPage = () => {
+    // Make new Event Cards Array
+    const { evcardQty } = evcardQtyBase;
+
+
+
+
     const { sectors, players } = gameBox;
     const [gameData, setGameData] = useState(gameBox); // All gamedata ftom start from the server
+
     const [phaseData, setPhaseData] = useState(1); // All gamedata ftom start from the server
     const { currentUser } = { currentUser: 2 };
 
+    // Start event cards and store them in state
+    const eventCardsArray = startEventCards(gameData, evcardQtyBase);
+    const [eventCards, setEventCards] = useState(eventCardsArray); // Initialize state for event cards
+
+    const [showUpdatedInfoModal, setShowUpdatedInfoModal] = useState(false);
 
 
+    // Function to handle showing the updated info modal
+    const handleShowUpdatedInfoModal = () => {
+        setShowUpdatedInfoModal(true);
+    };
+
+    // Function to handle closing the updated info modal
+    const handleUpdatedInfoModalClose = () => {
+        setShowUpdatedInfoModal(false);
+    };
 
     useEffect(() => {
-        // Fetch game data here and set it using setGameData
-        // Example:
-        // fetchData().then(data => setGameData(data));
-    }, []);
+        // Check if the phase has changed to a new phase
+        if (phaseData > 1) {
+            // Show the updated info modal
+            takeEventCard(gameData, setGameData, currentUser);
+            handleShowUpdatedInfoModal();
+        }
+    }, [phaseData]); // Trigger effect when phaseData changes
 
 
 
@@ -99,9 +130,48 @@ const PrivozPage = () => {
                     </div>
                 </div>
                 <div className="col-md-3">
-                    {gameData && <Menu gameBox={gameBox} gameData={gameData} />}
+                    {gameData && <Menu gameBox={gameBox} gameData={gameData} eventCards={eventCards} />
+                    }
                 </div>
             </div>
+            <Modal show={showUpdatedInfoModal} onHide={handleUpdatedInfoModalClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Trader Added Successfully!</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {/* Display information about updated traders */}
+                    <div>Your traders have been updated:</div>
+
+
+                    {/* Display information about new event cards */}
+                    <div>You get a new Event Card:</div>
+
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="primary" onClick={handleUpdatedInfoModalClose}>
+                        OK
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            <Modal show={showUpdatedInfoModal} onHide={handleUpdatedInfoModalClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Trader Added Successfully!</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {/* Display information about updated traders */}
+                    <div>Your traders have been updated:</div>
+
+                    {/* Render event cards data here */}
+                    {eventCards.map((card, index) => (
+                        <EventCard key={index} card={card} />
+                    ))}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="primary" onClick={handleUpdatedInfoModalClose}>
+                        OK
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 };
