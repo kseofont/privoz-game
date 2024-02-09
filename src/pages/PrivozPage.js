@@ -3,7 +3,7 @@ import Menu from '../components/Menu';
 import PrivozSector from '../components/PrivozSector';
 import gameBox from '../gamebox.json';
 import { Modal, Button } from 'react-bootstrap';
-import { takeEventCard, startEventCards } from '../logic/traderLogic';
+import { takeEventCard, startEventCards, makeEventCardArray } from '../logic/traderLogic';
 import EventCard from '../components/EventCard'; // Import the EventCard component
 
 import evcardQtyBase from "../evcardQty.json"; // Data with cards quantity
@@ -41,14 +41,42 @@ const PrivozPage = () => {
         setShowUpdatedInfoModal(false);
     };
 
+    const makeEventCardArray = (eventCards, setEventCards, currentUser, gameData, setGameData) => {
+        // Your logic for creating the event card array
+        // For example:
+        const deckEventCards = eventCards.filter(card => card.qty > 0 && card.location === "deck");
+
+        const multipliedCards = deckEventCards.flatMap((card, index) => {
+            const cardsArray = [];
+            for (let i = 0; i < card.qty; i++) {
+                const cardId = `${card.pk}_${String(i + 1).padStart(2, '0')}`;
+                const newCard = { ...card, cardId };
+                cardsArray.push(newCard);
+            }
+            return cardsArray;
+        });
+
+        return multipliedCards;
+    };
+
     useEffect(() => {
-        // Check if the phase has changed to a new phase
-        if (phaseData > 1) {
-            // Show the updated info modal
-            takeEventCard(gameData, setGameData, currentUser);
+        if (phaseData == 2) {
+            console.log('gameData prpage', gameData);
+
+            const eventCardArray = makeEventCardArray(eventCards, setEventCards, currentUser, gameData, setGameData);
+            console.log('eventCardArray', eventCardArray);
+            console.log('gameData prpage', gameData);
+            takeEventCard(eventCardArray, setEventCards, currentUser, gameData, setGameData);
             handleShowUpdatedInfoModal();
+
+
+            // Update the game phase after taking a new event card
+            const newPhase = phaseData + 1;
+            setPhaseData(newPhase);
+
+
         }
-    }, [phaseData]); // Trigger effect when phaseData changes
+    }, [phaseData]);
 
 
 
@@ -130,7 +158,7 @@ const PrivozPage = () => {
                     </div>
                 </div>
                 <div className="col-md-3">
-                    {gameData && <Menu gameBox={gameBox} gameData={gameData} eventCards={eventCards} />
+                    {gameData && <Menu gameData={gameData} eventCards={eventCards} />
                     }
                 </div>
             </div>
@@ -141,11 +169,31 @@ const PrivozPage = () => {
                 <Modal.Body>
                     {/* Display information about updated traders */}
                     <div>Your traders have been updated:</div>
-
-
-                    {/* Display information about new event cards */}
-                    <div>You get a new Event Card:</div>
-
+                    {/* Render player information and new event cards */}
+                    {gameData.players.map((player) => {
+                        if (player.pk === currentUser) {
+                            return (
+                                <div key={player.pk}>
+                                    <div>Player: {player.name}</div>
+                                    <div>Coins: ${player.coins}</div>
+                                    <div>Color: {player.color}</div>
+                                    {/* Display event cards */}
+                                    {player.event_cards && player.event_cards.length > 0 && (
+                                        <div>
+                                            <div>New Event Cards:</div>
+                                            <ul>
+                                                {player.event_cards.map((eventCardPk) => {
+                                                    const card = eventCards.find((card) => card.pk === eventCardPk);
+                                                    return <li key={eventCardPk}>{card.name}: {card.description}</li>;
+                                                })}
+                                            </ul>
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        }
+                        return null;
+                    })}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="primary" onClick={handleUpdatedInfoModalClose}>
@@ -153,25 +201,7 @@ const PrivozPage = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-            <Modal show={showUpdatedInfoModal} onHide={handleUpdatedInfoModalClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Trader Added Successfully!</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    {/* Display information about updated traders */}
-                    <div>Your traders have been updated:</div>
 
-                    {/* Render event cards data here */}
-                    {eventCards.map((card, index) => (
-                        <EventCard key={index} card={card} />
-                    ))}
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="primary" onClick={handleUpdatedInfoModalClose}>
-                        OK
-                    </Button>
-                </Modal.Footer>
-            </Modal>
         </div>
     );
 };

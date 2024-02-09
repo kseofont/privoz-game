@@ -22,7 +22,7 @@ const addTrader = (gameData, setGameData, sector, currentUser, phaseData, setPha
         return count;
     }, 0);
 
-    console.log('sectorTradersCount:', sectorTradersCount);
+    // console.log('sectorTradersCount:', sectorTradersCount);
 
 
 
@@ -30,12 +30,12 @@ const addTrader = (gameData, setGameData, sector, currentUser, phaseData, setPha
     // Check how many users have traders
     const usersWithTraders = gameData.players.filter(player => player.traders && player.traders.length > 0);
 
-    console.log('usersWithTraders:', usersWithTraders);
+    // console.log('usersWithTraders:', usersWithTraders);
 
     // Check if the current sector has less than two traders
     // const sectorTradersCount = usersWithTraders.filter(player => player.traders.some(trader => trader.sector === sector.pk)).length;
     //  console.log('sectorTradersCount:', sectorTradersCount);
-    console.log('gameData.players:', gameData.players.length);
+    //  console.log('gameData.players:', gameData.players.length);
 
     if (sectorTradersCount >= gameData.players.length) {
         console.error('Maximum number of traders reached in this sector.');
@@ -103,7 +103,7 @@ const addTrader = (gameData, setGameData, sector, currentUser, phaseData, setPha
         setPhaseData(newPhase);
         //   console.log(' phaseData', phaseData); // Log the updated game phase
 
-        console.log('Game Data Updated Successfully');
+        //   console.log('Game Data Updated Successfully');
     } else {
         console.error('User not found in game data.'); // Log an error if currentUser is not found
     }
@@ -143,11 +143,72 @@ export const startEventCards = (gameData, qty) => {
 
 
 
+//Make new Event Cards in game active array
+export const makeEventCardArray = (eventCards, setEventCards, currentUser, gameData, setGameData) => {
+    // Filter event cards with quantity > 0 and location "deck"
+    const deckEventCards = eventCards.filter(card => card.qty > 0 && card.location === "deck");
+
+    // Multiply each card with its quantity and add cardId
+    const eventCardsInGame = deckEventCards.flatMap((card, index) => {
+        // Create an array to hold the multiplied cards
+        const cardsArray = [];
+        // Iterate over the quantity of the card
+        for (let i = 0; i < card.qty; i++) {
+            // Create a new card object with the additional cardId
+            const cardId = `${card.pk}_${String(i + 1).padStart(2, '0')}`;
+            const newCard = { ...card, cardId };
+            // Push the new card to the array
+            cardsArray.push(newCard);
+        }
+        return cardsArray;
+    });
+
+    // Update the event cards state
+    setEventCards(eventCardsInGame);
+};
+
+
 //Take new Event Card
-export const takeEventCard = (gameData, setGameData, currentUser) => {
+//Take new Event Card
+// Take new Event Card
+export const takeEventCard = (eventCards, setEventCards, currentUser, gameData, setGameData) => {
+    // Filter event cards with quantity > 0 and location "deck"
+    const deckEventCards = eventCards.filter(card => card.qty > 0 && card.location === "deck");
 
-    console.log('gameData', gameData);
+    // If there are cards available in the deck
+    if (deckEventCards.length > 0) {
+        // Select a random card from the deck
+        const randomIndex = Math.floor(Math.random() * deckEventCards.length);
+        const selectedCard = deckEventCards[randomIndex];
 
-    console.log('currentUser', currentUser);
+        // Generate a unique cardId for the selected card
+        const cardId = `${selectedCard.pk}_${String(deckEventCards.length + 1).padStart(2, '0')}`;
 
+        // Update the selected card's location to "hand"
+        selectedCard.location = "hand";
+
+        // Find the current user's player object in the players array
+        const currentUserPlayer = gameData.players.find(player => player.pk === currentUser);
+
+        // If the current user's player object is found
+        if (currentUserPlayer) {
+            // Add the event card's pk to the event_cards array of the player
+            if (!currentUserPlayer.event_cards) {
+                currentUserPlayer.event_cards = [];
+            }
+            currentUserPlayer.event_cards.push(selectedCard.pk);
+        }
+
+        // Log the updated gameData
+        console.log('Updated gameData:', gameData);
+
+        // Update the gameData state with the modified player data
+        setGameData(prevGameData => ({
+            ...prevGameData,
+            players: prevGameData.players.map(player =>
+                player.pk === currentUserPlayer.pk ? currentUserPlayer : player
+            ),
+        }));
+
+    }
 };

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-const Menu = ({ gameBox, gameData, eventCards }) => {
-    const { players } = gameBox;
+const Menu = ({ gameData, eventCards }) => {
+    const { players } = gameData;
     const [showRulesModal, setShowRulesModal] = useState(false);
     const [showEventCardsModal, setShowEventCardsModal] = useState(false); // State for event cards modal
 
@@ -14,7 +14,7 @@ const Menu = ({ gameBox, gameData, eventCards }) => {
     const handleShowEventCardsModal = () => setShowEventCardsModal(true);
     const handleCloseEventCardsModal = () => setShowEventCardsModal(false);
 
-    console.log(eventCards);
+    //  console.log(eventCards);
 
     return (
         <div>
@@ -39,7 +39,25 @@ const Menu = ({ gameBox, gameData, eventCards }) => {
                                             {/* Display sector information for each trader */}
                                             <p className="card-text">Sector: {gameData.sectors.find(sector => sector.pk === trader.sector).name}</p>
                                         </div>
+
+
                                     ))}
+                                    {/* Display event cards for the player */}
+                                    {userData.event_cards && userData.event_cards.length > 0 && (
+                                        <div className="event-cards-info">
+                                            <p className="card-text">Event Cards:</p>
+                                            <ul>
+                                                {userData.event_cards.map(eventCardPk => {
+                                                    const eventCard = eventCards.find(card => card.pk === eventCardPk);
+                                                    return (
+                                                        <li key={eventCard.pk}>
+                                                            {eventCard.name}: {eventCard.description}
+                                                        </li>
+                                                    );
+                                                })}
+                                            </ul>
+                                        </div>
+                                    )}
                                 </>
                             )}
                         </div>
@@ -141,7 +159,7 @@ const Menu = ({ gameBox, gameData, eventCards }) => {
                 </Modal.Header>
                 <Modal.Body>
                     {/* Render negative cards */}
-                    <div>
+                    <div className='p-2 mb-4 red-background'>
                         <h3>Negative Cards</h3>
                         <div className="row">
                             {eventCards
@@ -164,7 +182,7 @@ const Menu = ({ gameBox, gameData, eventCards }) => {
                     </div>
 
                     {/* Render positive cards */}
-                    <div>
+                    <div className='p-2 mb-4 green-background'>
                         <h3>Positive Cards</h3>
                         <div className="row">
                             {eventCards
