@@ -66,13 +66,18 @@ const PrivozPage = () => {
             const eventCardArray = makeEventCardArray(eventCards, setEventCards, currentUser, gameData, setGameData);
             console.log('eventCardArray', eventCardArray);
             console.log('gameData prpage', gameData);
-            takeEventCard(eventCardArray, setEventCards, currentUser, gameData, setGameData);
-            handleShowUpdatedInfoModal();
+            // Introduce a delay before showing phase 2
+            setTimeout(() => {
+                takeEventCard(eventCardArray, setEventCards, currentUser, gameData, setGameData);
+                handleShowUpdatedInfoModal();
+
+                // Update the game phase after the delay
+                const newPhase = phaseData + 1;
+                setPhaseData(newPhase);
+            }, 1000); // 1 second delay
 
 
-            // Update the game phase after taking a new event card
-            const newPhase = phaseData + 1;
-            setPhaseData(newPhase);
+
 
 
         }
