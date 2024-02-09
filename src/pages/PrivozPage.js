@@ -7,6 +7,7 @@ import { takeEventCard, startEventCards, makeEventCardArray } from '../logic/tra
 
 import evcardQtyBase from "../evcardQty.json"; // Data with cards quantity
 
+
 //import axios from 'axios'; // Import axios for making HTTP requests
 
 const PrivozPage = () => {
@@ -36,15 +37,20 @@ const PrivozPage = () => {
 
 
     useEffect(() => {
-        if (phaseData === 2) {
+        if (phaseData == 2) {
             console.log('gameData prpage', gameData);
 
-            const eventCardArray = makeEventCardArray(eventCards, setEventCards, currentUser, gameData, setGameData);
-            console.log('eventCardArray', eventCardArray);
+            console.log('eventCards', eventCards);
+            console.log('setEventCards', setEventCards);
+            console.log('currentUser', currentUser);
+            console.log('gameData', gameData);
+
+            const eventCardArrayNext = makeEventCardArray(eventCards, setEventCards);
+            console.log('eventCardArrayNext', eventCardArrayNext);
             console.log('gameData prpage', gameData);
             // Introduce a delay before showing phase 2
             setTimeout(() => {
-                takeEventCard(eventCardArray, setEventCards, currentUser, gameData, setGameData);
+                takeEventCard(eventCards, setEventCards, currentUser, gameData, setGameData);
                 handleShowUpdatedInfoModal();
 
                 // Update the game phase after the delay
@@ -52,7 +58,6 @@ const PrivozPage = () => {
                 setPhaseData(newPhase);
             }, 2000); // 2 seconds delay
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [phaseData]);
 
 

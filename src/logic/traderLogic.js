@@ -144,7 +144,7 @@ export const startEventCards = (gameData, qty) => {
 
 
 //Make new Event Cards in game active array
-export const makeEventCardArray = (eventCards, setEventCards, currentUser, gameData, setGameData) => {
+export const makeEventCardArray = (eventCards, setEventCards) => {
     // Filter event cards with quantity > 0 and location "deck"
     const deckEventCards = eventCards.filter(card => card.qty > 0 && card.location === "deck");
 
@@ -162,6 +162,7 @@ export const makeEventCardArray = (eventCards, setEventCards, currentUser, gameD
         }
         return cardsArray;
     });
+    console.log('eventCardsInGame', eventCardsInGame);
 
     // Update the event cards state
     setEventCards(eventCardsInGame);
