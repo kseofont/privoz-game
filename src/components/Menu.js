@@ -5,6 +5,7 @@ const Menu = ({ gameData, eventCards }) => {
     const { players } = gameData;
     const [showRulesModal, setShowRulesModal] = useState(false);
     const [showEventCardsModal, setShowEventCardsModal] = useState(false); // State for event cards modal
+    const [showProductCardsModal, setShowProductCardsModal] = useState(false); // State for event cards modal
 
 
     const handleCloseRulesModal = () => setShowRulesModal(false);
@@ -12,7 +13,9 @@ const Menu = ({ gameData, eventCards }) => {
 
     // Functions to show and hide the event cards modal
     const handleShowEventCardsModal = () => setShowEventCardsModal(true);
+    const handleShowProductCardsModal = () => setShowProductCardsModal(true);
     const handleCloseEventCardsModal = () => setShowEventCardsModal(false);
+    const handleCloseProductCardsModal = () => setShowProductCardsModal(false);
 
     //  console.log(eventCards);
 
@@ -74,6 +77,11 @@ const Menu = ({ gameData, eventCards }) => {
                 {/* Button to show event cards modal */}
                 <Button variant="primary" onClick={handleShowEventCardsModal}>
                     Event Cards
+                </Button>
+
+                {/* Button to show Product cards modal */}
+                <Button variant="primary" onClick={handleShowProductCardsModal}>
+                    Product Cards
                 </Button>
             </div>
             {/* Rules Modal */}
@@ -229,6 +237,27 @@ const Menu = ({ gameData, eventCards }) => {
 
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseEventCardsModal}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            {/* Product Cards Modal */}
+            <Modal show={showProductCardsModal} onHide={handleCloseProductCardsModal} dialogClassName="modal-70w">
+                <Modal.Header closeButton>
+                    <Modal.Title>Product Cards</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {/* Render negative cards */}
+                    <div className='p-2 mb-4 red-background'>
+                        <h3>All Product Cards</h3>
+
+                    </div>
+
+
+                </Modal.Body>
+
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseProductCardsModal}>
                         Close
                     </Button>
                 </Modal.Footer>
