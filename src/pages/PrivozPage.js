@@ -10,9 +10,7 @@ const PrivozPage = () => {
     const [phaseData, setPhaseData] = useState(1); // All gamedata ftom start from the server
     const { currentUser } = { currentUser: 2 };
 
-    const numPlayers = gameData.players.length;
-    const numColumns = Math.min(numPlayers, 6); // Ensure a maximum of 6 columns
-    const columnClass = `col-md-${Math.floor(12 / numColumns)}`;
+
 
 
     useEffect(() => {
@@ -91,9 +89,9 @@ const PrivozPage = () => {
                                 <div key={sector.pk} className="col mb-3">
                                     <div className={`sector border p-3 h-100 ${sector.name.toLowerCase()}`}>
                                         <h3 className="sector-title">{sector.name}</h3>
-                                        <div className={`d-flex flex-column gap-1 ${columnClass}`}>
-                                            <PrivozSector sector={sector} gameData={gameData} setGameData={setGameData} currentUser={currentUser} phaseData={phaseData} setPhaseData={setPhaseData} />
-                                        </div>
+                                        {/* <div className={`d-flex flex-column gap-1 ${columnClass}`}> */}
+                                        <PrivozSector sector={sector} gameData={gameData} setGameData={setGameData} currentUser={currentUser} phaseData={phaseData} setPhaseData={setPhaseData} />
+                                        {/* </div> */}
                                     </div>
                                 </div>
                             )

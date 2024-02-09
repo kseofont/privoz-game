@@ -41,19 +41,26 @@ const PrivozSector = ({ sector, gameData, setGameData, currentUser, phaseData, s
     };
 
 
+
+    const numPlayers = gameData.players.length;
+    const numColumns = Math.min(numPlayers, 6); // Ensure a maximum of 6 columns
+    const columnClass = `col-md-${Math.floor(12 / numColumns)}`;
+
     return (
         <div className={`sector border p-3 mb-3 ${sector.name.toLowerCase()}`}>
 
             <div className="row gap-1">
                 {/* Display existing traders */}
+                <div className={`d-flex flex-column gap-1 ${columnClass}`}>
 
-                {sectorTraders.map((trader, index) => (
-                    <Trader key={`${trader.pk}-${index}`} sector={sector} user={gameData.players.find(player => player.pk === trader.playerPk)} trader={trader} />
-                ))}
+                    {sectorTraders.map((trader, index) => (
+                        <Trader key={`${trader.pk}-${index}`} sector={sector} user={gameData.players.find(player => player.pk === trader.playerPk)} trader={trader} />
+                    ))}
 
 
 
 
+                </div>
             </div>
             {/* Button to add a new trader */}
             {phaseData <= 1 && <button onClick={handleAddTrader}>Add Trader</button>}
