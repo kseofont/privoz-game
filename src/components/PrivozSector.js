@@ -1,17 +1,17 @@
-// PrivozSector.js
 import React, { useState } from 'react';
 import addTrader from '../logic/traderLogic';
 import { Modal, Button } from 'react-bootstrap';
+import Trader from './Trader';
 
-const PrivozSector = ({ sector, gameData, setGameData, currentUser }) => {
+const PrivozSector = ({ sector, gameData, setGameData, currentUser, phaseData, setPhaseData }) => {
     const [showAddTraderModal, setShowAddTraderModal] = useState(false);
+    const [showMaxTradersModal, setShowMaxTradersModal] = useState(false);
 
-    const handleAddTrader = () => {
-        setShowAddTraderModal(true);
-    };
+
+
 
     const handleConfirmAddTrader = () => {
-        addTrader(gameData, setGameData, sector, currentUser);
+        addTrader(gameData, setGameData, sector, currentUser, phaseData, setPhaseData);
 
         setShowAddTraderModal(false);
     };
@@ -20,30 +20,43 @@ const PrivozSector = ({ sector, gameData, setGameData, currentUser }) => {
         setShowAddTraderModal(false);
     };
 
-    // Filter traders belonging to the current sector
-    const sectorTraders = gameData.players.filter(player => {
-        // Check if the player has traders
-        if (player.traders && player.traders.length > 0) {
-            // Check if any trader of the player belongs to the current sector
-            return player.traders.some(trader => trader.sector === sector.pk);
+
+    const sectorTraders = gameData.players.flatMap(player =>
+        player.traders ? player.traders.filter(trader => trader.sector === sector.pk) : []
+    );
+
+    // Maximum number of traders allowed in the sector
+    const maxTraders = gameData.players.length;
+
+    // Count how many traders are currently in the sector
+    const currentTradersCount = sectorTraders.length;
+
+    // Function to handle adding a trader
+    const handleAddTrader = () => {
+        if (currentTradersCount >= maxTraders) {
+            setShowMaxTradersModal(true);
+        } else {
+            setShowAddTraderModal(true);
         }
-        return false; // Return false if the player has no traders or no trader in the current sector
-    });
+    };
+
 
     return (
         <div className={`sector border p-3 mb-3 ${sector.name.toLowerCase()}`}>
-            <h3 className="sector-title">{sector.name}</h3>
+
             <div className="row gap-1">
                 {/* Display existing traders */}
-                {sectorTraders.map(trader => (
-                    <div key={trader.pk} className="col border text-center pb-4 yellow">
-                        <p>Trader {trader.name}</p>
-                        <p>Coins: {trader.coins}</p>
-                    </div>
+
+                {sectorTraders.map((trader, index) => (
+                    <Trader key={`${trader.pk}-${index}`} sector={sector} user={gameData.players.find(player => player.pk === trader.playerPk)} trader={trader} />
                 ))}
+
+
+
+
             </div>
             {/* Button to add a new trader */}
-            <button onClick={handleAddTrader}>Add Trader</button>
+            {phaseData <= 1 && <button onClick={handleAddTrader}>Add Trader</button>}
             {/* Modal for adding a new trader */}
             <Modal show={showAddTraderModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
@@ -59,6 +72,24 @@ const PrivozSector = ({ sector, gameData, setGameData, currentUser }) => {
                     </Button>
                     <Button variant="primary" onClick={handleConfirmAddTrader}>
                         Add Trader
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            {/* Modal for maximum traders reached */}
+            <Modal show={showMaxTradersModal} onHide={() => setShowMaxTradersModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Maximum Traders Reached</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Maximum number of traders ({maxTraders}) reached in this sector. You
+                    cannot add another trader.
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        variant="primary"
+                        onClick={() => setShowMaxTradersModal(false)}
+                    >
+                        OK
                     </Button>
                 </Modal.Footer>
             </Modal>

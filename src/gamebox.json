@@ -11,6 +11,7 @@
             "traders": [
                 {
                     "pk": 1,
+                    "playerPk": 1,
                     "sector": 1
                 }
             ]
@@ -19,13 +20,7 @@
             "pk": 2,
             "name": "Yaroslav",
             "coins": 10,
-            "color": "Red",
-            "traders": [
-                {
-                    "pk": 1,
-                    "sector": 1
-                }
-            ]
+            "color": "Red"
         }
     ],
     "sectors": [
