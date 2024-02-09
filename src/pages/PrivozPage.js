@@ -4,21 +4,14 @@ import PrivozSector from '../components/PrivozSector';
 import gameBox from '../gamebox.json';
 import { Modal, Button } from 'react-bootstrap';
 import { takeEventCard, startEventCards, makeEventCardArray } from '../logic/traderLogic';
-import EventCard from '../components/EventCard'; // Import the EventCard component
 
 import evcardQtyBase from "../evcardQty.json"; // Data with cards quantity
-
 
 //import axios from 'axios'; // Import axios for making HTTP requests
 
 const PrivozPage = () => {
     // Make new Event Cards Array
-    const { evcardQty } = evcardQtyBase;
 
-
-
-
-    const { sectors, players } = gameBox;
     const [gameData, setGameData] = useState(gameBox); // All gamedata ftom start from the server
 
     const [phaseData, setPhaseData] = useState(1); // All gamedata ftom start from the server
@@ -41,26 +34,9 @@ const PrivozPage = () => {
         setShowUpdatedInfoModal(false);
     };
 
-    const makeEventCardArray = (eventCards, setEventCards, currentUser, gameData, setGameData) => {
-        // Your logic for creating the event card array
-        // For example:
-        const deckEventCards = eventCards.filter(card => card.qty > 0 && card.location === "deck");
-
-        const multipliedCards = deckEventCards.flatMap((card, index) => {
-            const cardsArray = [];
-            for (let i = 0; i < card.qty; i++) {
-                const cardId = `${card.pk}_${String(i + 1).padStart(2, '0')}`;
-                const newCard = { ...card, cardId };
-                cardsArray.push(newCard);
-            }
-            return cardsArray;
-        });
-
-        return multipliedCards;
-    };
 
     useEffect(() => {
-        if (phaseData == 2) {
+        if (phaseData === 2) {
             console.log('gameData prpage', gameData);
 
             const eventCardArray = makeEventCardArray(eventCards, setEventCards, currentUser, gameData, setGameData);
@@ -74,13 +50,9 @@ const PrivozPage = () => {
                 // Update the game phase after the delay
                 const newPhase = phaseData + 1;
                 setPhaseData(newPhase);
-            }, 1000); // 1 second delay
-
-
-
-
-
+            }, 2000); // 2 seconds delay
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [phaseData]);
 
 

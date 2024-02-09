@@ -172,6 +172,10 @@ export const makeEventCardArray = (eventCards, setEventCards, currentUser, gameD
 //Take new Event Card
 // Take new Event Card
 export const takeEventCard = (eventCards, setEventCards, currentUser, gameData, setGameData) => {
+    // Ensure eventCards is not undefined before proceeding
+    if (!eventCards) {
+        return; // or handle the error appropriately
+    }
     // Filter event cards with quantity > 0 and location "deck"
     const deckEventCards = eventCards.filter(card => card.qty > 0 && card.location === "deck");
 
