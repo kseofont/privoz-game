@@ -219,14 +219,22 @@ export const takeEventCard = (eventCards, setEventCards, currentUser, gameData, 
 
 // Make Active Product Cards
 export const startProductCards = (gameData, startProductData) => {
-    const productCardsWithQty = gameData.product_cards.map(card => {
+    let productCardsWithQty = [];
+
+    gameData.product_cards.forEach(card => {
         const quantityObj = startProductData.find(item => item.pk === card.pk);
-        if (quantityObj) {
-            return { ...card, qty: quantityObj.qty };
-        } else {
-            return { ...card, qty: 10 }; // Default quantity value if not found in startProductData
+        const quantity = quantityObj ? quantityObj.qty : 10; // Default quantity value if not found in startProductData
+
+        // Duplicate the product card according to its quantity
+        for (let i = 0; i < quantity; i++) {
+            const productId = `pk_${String(card.pk).padStart(2, '0')}${String(i + 1).padStart(2, '0')}`;
+            productCardsWithQty.push({ ...card, qty: 1, product_id: productId });
         }
     });
+
+    // Sort the array by product ID
+    productCardsWithQty.sort((a, b) => a.product_id.localeCompare(b.product_id));
+
     return productCardsWithQty;
 };
 

@@ -8,6 +8,9 @@ import { takeEventCard, startEventCards, makeEventCardArray, startProductCards }
 import evcardQtyBase from "../evcardQty.json"; // Data with cards quantity
 import startProductData from "../startProductData.json"; // Data with cards quantity
 
+import Product from '../components/Product';
+
+
 
 //import axios from 'axios'; // Import axios for making HTTP requests
 
@@ -69,6 +72,43 @@ const PrivozPage = () => {
     }, [phaseData]);
 
 
+    // Wholesale market modal
+    const [showWholesaleMarketModal, setShowWholesaleMarketModal] = useState(false);
+
+    const handleCloseWholesaleMarketModal = () => setShowWholesaleMarketModal(false);
+    const handleShowWholesaleMarketModal = () => setShowWholesaleMarketModal(true);
+
+    useEffect(() => {
+        const eventCardsArray = startEventCards(gameData, evcardQtyBase);
+        const productCardsArray = startProductCards(gameData, startProductData);
+        setEventCards(eventCardsArray);
+        setProductCards(productCardsArray);
+    }, [gameData]);
+
+    // Handle opening Wholesale Market modal
+    const handleOpenWholesaleMarketModal = () => {
+        handleShowWholesaleMarketModal(true);
+    };
+
+
+
+
+
+
+    // Function to sort products by sector
+    const sortProductsBySector = () => {
+        const sortedProducts = {};
+        productCards.forEach(product => {
+            const sector = product.sector.name;
+            if (!sortedProducts[sector]) {
+                sortedProducts[sector] = [];
+            }
+            sortedProducts[sector].push(product);
+        });
+        return sortedProducts;
+    };
+
+
 
 
     // const [data, setData] = useState(null);
@@ -90,7 +130,15 @@ const PrivozPage = () => {
     return (
         <div className="container-fluid">
             <div className="row">
+                <button type="button" className="btn btn-primary " onClick={handleOpenWholesaleMarketModal}>
+
+                    Wholesale Market
+                </button>
+            </div>
+            <div className="row">
                 <h2>Privoz Bazar</h2>
+                {/* Button to open Wholesale Market modal for TEST */}
+
                 <div className="col-md-9">
 
                     <div className="game-phase mb-2 border border-green px-3 py-2">
@@ -106,6 +154,10 @@ const PrivozPage = () => {
                             <div className={`col phase3 ${phaseData !== 3 ? 'd-none' : ''}`}>
                                 <h3><span>Phase 3:</span> Receiving Goods Cards</h3>
                                 <p>1. Obtain goods cards. Two goods cards are opened for each trader from the corresponding zone once per round.</p>
+                                {/* Button to open Wholesale Market modal */}
+                                <button type="button" className="btn btn-primary" onClick={handleOpenWholesaleMarketModal}>
+                                    Wholesale Market
+                                </button>
                             </div>
                             <div className={`col phase4 ${phaseData !== 4 ? 'd-none' : ''}`}>
                                 <h3><span>Phase 4:</span> Opening Weekly Card</h3>
@@ -192,7 +244,38 @@ const PrivozPage = () => {
                 </Modal.Footer>
             </Modal>
 
-        </div>
+            {/* Wholesale Market Modal */}
+            <Modal show={showWholesaleMarketModal} onHide={handleCloseWholesaleMarketModal} dialogClassName="modal-90w">
+                <Modal.Header closeButton>
+                    <Modal.Title>Wholesale Market</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {/* Content of the Wholesale Market */}
+                    {/* Render products sorted by sector */}
+                    {Object.entries(sortProductsBySector()).map(([sector, products]) => (
+                        <div key={sector} className="mb-4">
+                            <div className="p-2 mb-2 red-background">
+                                <h3>{sector}</h3>
+                            </div>
+                            <div className="row row-cols-1 row-cols-md-3">
+                                {products.map(product => (
+                                    <div key={product.pk} className="col mb-3">
+                                        {/* Render each product using Product component */}
+                                        <Product product={product} />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseWholesaleMarketModal}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+        </div >
     );
 };
 

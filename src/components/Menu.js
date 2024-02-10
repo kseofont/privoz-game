@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import Product from './Product';
+
 
 const Menu = ({ gameData, eventCards, productCards }) => {
     const { players } = gameData;
@@ -259,16 +261,7 @@ const Menu = ({ gameData, eventCards, productCards }) => {
                             <div className="row row-cols-1 row-cols-md-3">
                                 {productCards.filter(card => card.sector.pk === sector.pk).map((card) => (
                                     <div key={card.pk} className="col mb-3">
-                                        <div className="card">
-                                            {/* Update the image src attribute */}
-                                            <img src={`img/${card.image}`} className="card-img-top" alt={card.name} />
-                                            <div className="card-body">
-                                                <h5 className="card-title">{card.name}</h5>
-                                                <p className="card-text">Description: {card.description}</p>
-                                                <p className="card-text">Price: ${card.buy_price}</p>
-                                                {/* Add more details as needed */}
-                                            </div>
-                                        </div>
+                                        <Product key={card.pk} product={card} />
                                     </div>
                                 ))}
                             </div>
