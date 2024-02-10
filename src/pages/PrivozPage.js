@@ -4,7 +4,7 @@ import Menu from '../components/Menu';
 import PrivozSector from '../components/PrivozSector';
 import gameBox from '../gamebox.json';
 import { Modal, Button } from 'react-bootstrap';
-import { takeEventCard, startEventCards, makeEventCardArray, startProductCards } from '../logic/traderLogic';
+import { takeEventCard, startEventCards, startProductCards } from '../logic/traderLogic';
 
 // Import updateWholesaleProducts from traderLogic
 import { updateWholesaleProducts } from '../logic/updateWholesaleProducts';
@@ -65,7 +65,7 @@ const PrivozPage = () => {
                 setPhaseData(newPhase);
             }, 2000); // 2 seconds delay
         }
-    }, [phaseData]);
+    }, [phaseData, currentUser, eventCards, gameData]);
 
 
     // Wholesale market modal
@@ -104,7 +104,7 @@ const PrivozPage = () => {
             setProductCards(updateWholesaleProducts(gameData, productCards));
             setIsProductCardsUpdated(true);
         }
-    }, [phaseData, isProductCardsUpdated]);
+    }, [phaseData, isProductCardsUpdated, gameData, productCards]);
 
 
     // useEffect(() => {
