@@ -25,6 +25,9 @@ const Menu = ({ gameData, eventCards, productCards }) => {
         <div>
             <h3>Players Information</h3>
             {players.map((player) => {
+                if (!player.pk) {
+                    return null; // Skip rendering if pk is undefined or null
+                }
                 const userData = gameData && gameData.players.find(dataPlayer => dataPlayer.pk === player.pk);
                 return (
                     <div key={player.pk} className="card my-2">
@@ -259,14 +262,15 @@ const Menu = ({ gameData, eventCards, productCards }) => {
                                 <h3>{sector.name}</h3>
                             </div>
                             <div className="row row-cols-1 row-cols-md-3">
-                                {productCards.filter(card => card.sector.pk === sector.pk).map((card) => (
-                                    <div key={card.pk} className="col mb-3">
-                                        <Product key={card.pk} product={card} />
+                                {productCards.filter(card => card.sector && card.sector.pk === sector.pk).map((card) => (
+                                    <div key={card.product_id} className="col mb-3">
+                                        <Product key={card.product_id} product={card} />
                                     </div>
                                 ))}
                             </div>
                         </div>
                     ))}
+
 
                 </Modal.Body>
                 <Modal.Footer>

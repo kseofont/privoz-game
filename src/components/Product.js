@@ -6,7 +6,7 @@ const Product = ({ product }) => {
         // Return null or a placeholder if product data is incomplete
         return null;
     }
-    console.log('product', product);
+    //console.log('product', product);
 
     return (
         <div className="card">
@@ -20,8 +20,14 @@ const Product = ({ product }) => {
                 <p className="card-text">Price: ${product.buy_price}</p>
                 <p className="card-text">Sector: {product.sector.name}</p>
                 <p className="card-text">Quantity: {product.qty}</p>
+                <p className="card-text">buy_price: {product.buy_price}</p>
+                <p className="card-text">Legal Status: {product.is_legal ? 'Legal' : 'Illegal'}</p>
+                <p className="card-text">Product ID: {product.product_id}</p>
+                <p className="card-text">Sell Price: {product.sell_price}</p>
+                <p className="card-text">Location: {product.location}</p>
                 {/* Add more details as needed */}
             </div>
+
         </div>
     );
 };

@@ -5,6 +5,9 @@ import gameBox from '../gamebox.json';
 import { Modal, Button } from 'react-bootstrap';
 import { takeEventCard, startEventCards, makeEventCardArray, startProductCards } from '../logic/traderLogic';
 
+// Import updateWholesaleProducts from traderLogic
+import { updateWholesaleProducts } from '../logic/updateWholesaleProducts';
+
 import evcardQtyBase from "../evcardQty.json"; // Data with cards quantity
 import startProductData from "../startProductData.json"; // Data with cards quantity
 
@@ -18,7 +21,6 @@ const PrivozPage = () => {
     // Make new Event Cards Array
 
     const [gameData, setGameData] = useState(gameBox); // All gamedata ftom start from the server
-
     const [phaseData, setPhaseData] = useState(1); // All gamedata ftom start from the server
     const { currentUser } = { currentUser: 2 };
 
@@ -27,8 +29,8 @@ const PrivozPage = () => {
     // Start product cards and store them in state
     const productCardsArray = startProductCards(gameData, startProductData);
 
-    console.log('gameData', gameData);
-    console.log('productCardsArray', productCardsArray);
+    //  console.log('gameData', gameData);
+    //console.log('productCardsArray', productCardsArray);
     const [eventCards, setEventCards] = useState(eventCardsArray); // Initialize state for event cards
     const [productCards, setProductCards] = useState(productCardsArray); // Initialize state for products cards
 
@@ -45,16 +47,9 @@ const PrivozPage = () => {
         setShowUpdatedInfoModal(false);
     };
 
-    console.log('productCards', productCards);
+    //console.log('productCards', productCards);
     useEffect(() => {
         if (phaseData === 2) {
-            console.log('gameData prpage', gameData);
-
-            console.log('eventCards', eventCards);
-            console.log('setEventCards', setEventCards);
-            console.log('currentUser', currentUser);
-            console.log('gameData', gameData);
-
 
             //  const eventCardArrayNext = makeEventCardArray(eventCards, setEventCards);
             // console.log('eventCardArrayNext', eventCardArrayNext);
@@ -92,21 +87,70 @@ const PrivozPage = () => {
 
 
 
+    // Function to add product cards to traders
 
+    // Function to update product cards
+    const updatedProductCards = updateWholesaleProducts(gameData, productCards);
+
+
+    //   const updatedProductCards = updateWholesaleProducts();
+    const [isProductCardsUpdated, setIsProductCardsUpdated] = useState(false);
+    useEffect(() => {
+        if (phaseData === 3 && !isProductCardsUpdated) {
+            // Update the product cards with the newly calculated updatedProductCards
+            console.log('phase 3');
+
+            setProductCards(updateWholesaleProducts(gameData, productCards));
+            setIsProductCardsUpdated(true);
+        }
+    }, [phaseData, isProductCardsUpdated]);
+
+
+    // useEffect(() => {
+    //     // Calculate updatedProductCards by default
+    //     //const updatedProductCards = searchProductForWholesale(productCards, gameData.players, currentUser, setProductCards);
+    //     console.log('updatedProductCards', updatedProductCards);
+    //     console.log('productCards', productCards);
+    //     console.log('updatedProductCards', updatedProductCards);
+
+    //     // Run updatedProductCards only when phaseData is equal to 3
+    //     if (phaseData === 3) {
+    //         // Update the product cards with the newly calculated updatedProductCards
+    //         console.log('phase 3');
+
+    //         setProductCards(updateWholesaleProducts());
+    //     }
+    // }, [phaseData, productCards, gameData.players, currentUser, setProductCards]);
 
 
     // Function to sort products by sector
     const sortProductsBySector = () => {
         const sortedProducts = {};
-        productCards.forEach(product => {
-            const sector = product.sector.name;
+        updatedProductCards.forEach(product => {
+            const sector = product.sector ? product.sector.name : 'Unknown'; // Add a null check
             if (!sortedProducts[sector]) {
                 sortedProducts[sector] = [];
             }
             sortedProducts[sector].push(product);
         });
-        return sortedProducts;
+
+        // Sort the sectors, moving "Illegal" to the end
+        const sortedKeys = Object.keys(sortedProducts).sort((a, b) => {
+            if (a === 'Illegal') return 1; // Move "Illegal" to the end
+            if (b === 'Illegal') return -1; // Move "Illegal" to the end
+            return a.localeCompare(b); // Sort alphabetically for other sectors
+        });
+
+        // Create a new object with sorted sectors
+        const sortedProductsBySector = {};
+        sortedKeys.forEach(key => {
+            sortedProductsBySector[key] = sortedProducts[key];
+        });
+
+        return sortedProductsBySector;
     };
+
+
 
 
 
@@ -245,13 +289,13 @@ const PrivozPage = () => {
             </Modal>
 
             {/* Wholesale Market Modal */}
-            <Modal show={showWholesaleMarketModal} onHide={handleCloseWholesaleMarketModal} dialogClassName="modal-90w">
+            <Modal show={showWholesaleMarketModal} onHide={handleCloseWholesaleMarketModal} dialogClassName="modal-90w ">
                 <Modal.Header closeButton>
                     <Modal.Title>Wholesale Market</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {/* Content of the Wholesale Market */}
-                    {/* Render products sorted by sector */}
+                    {/* Render updatedProductCards sorted by sector */}
                     {Object.entries(sortProductsBySector()).map(([sector, products]) => (
                         <div key={sector} className="mb-4">
                             <div className="p-2 mb-2 red-background">
@@ -259,9 +303,9 @@ const PrivozPage = () => {
                             </div>
                             <div className="row row-cols-1 row-cols-md-3">
                                 {products.map(product => (
-                                    <div key={product.pk} className="col mb-3">
+                                    <div key={product.product_id} className="col mb-3">
                                         {/* Render each product using Product component */}
-                                        <Product product={product} />
+                                        <Product key={product.product_id} product={product} />
                                     </div>
                                 ))}
                             </div>

@@ -5,7 +5,7 @@ const Trader = ({ sector, user, trader }) => {
     const userName = user ? user.name : "Unknown User";
     const userColor = user ? user.color : "red";
     // console.log('trader', trader);
-    console.log('user', user);
+    //   console.log('user', user);
     return (
         <div className={`col border text-center pb-4 ${userColor.toLowerCase()}`}>
             <i className={`bi bi-shop-window ${userColor.toLowerCase()}`}></i>

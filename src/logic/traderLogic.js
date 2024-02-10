@@ -228,7 +228,7 @@ export const startProductCards = (gameData, startProductData) => {
         // Duplicate the product card according to its quantity
         for (let i = 0; i < quantity; i++) {
             const productId = `pk_${String(card.pk).padStart(2, '0')}${String(i + 1).padStart(2, '0')}`;
-            productCardsWithQty.push({ ...card, qty: 1, product_id: productId });
+            productCardsWithQty.push({ ...card, qty: 1, product_id: productId, location: "deck" });
         }
     });
 
@@ -238,4 +238,52 @@ export const startProductCards = (gameData, startProductData) => {
     return productCardsWithQty;
 };
 
+// Make function for sort products for each trader for wholesail market
+// if users pk is current user, thats product has tradeActive: true, add for each trader 2 random product in that sector. also add 1 Illigal product with  tradeActive: true
+export const searchProductForWholesale = (productCards, players, currentUser, setProductCards) => {
+    // Verify if currentUser is a valid player pk
+    const currentUserPlayer = players.find(player => player.pk === currentUser);
+    if (!currentUserPlayer) {
+        // Handle the case where currentUser is not a valid player pk
+        console.error(`Player with pk ${currentUser} not found.`);
+        return []; // Or handle this error in another way
+    }
 
+    // Find the current user's sector
+    const currentUserSector = currentUserPlayer.sector;
+
+    // Calculate the number of traders in the current user's sector
+    const sectorTradersCount = players.reduce((count, player) => {
+        // Check if the player has traders and if their sector exists and has a pk property
+        if (player.traders && player.traders.length > 0 && player.sector && player.sector.pk) {
+            // Increase the count by the number of traders in the current sector
+            count += player.traders.length;
+        } else {
+            // If player's sector is not available, skip this player
+            console.warn(`Player with pk ${player.pk} has no valid sector.`);
+        }
+        return count;
+    }, 0);
+
+    // Filter product cards based on the sector of the current user
+    let filteredProductCards = [];
+    if (currentUserSector) {
+        filteredProductCards = productCards.filter(product => product.sector && product.sector.pk === currentUserSector.pk);
+    }
+
+    // Select two random products and mark them as tradeActive: true
+    const selectedProducts = [];
+    for (let i = 0; i < 2; i++) {
+        const randomIndex = Math.floor(Math.random() * filteredProductCards.length);
+        selectedProducts.push({ ...filteredProductCards[randomIndex], tradeActive: true });
+    }
+
+    // Add illegal products if there are no traders
+    if (sectorTradersCount === 0) {
+        const illegalProduct1 = { name: 'Illegal Product 1', tradeActive: true };
+        const illegalProduct2 = { name: 'Illegal Product 2', tradeActive: true };
+        selectedProducts.push(illegalProduct1, illegalProduct2);
+    }
+
+    return selectedProducts;
+};
