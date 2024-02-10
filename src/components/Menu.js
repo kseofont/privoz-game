@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-const Menu = ({ gameData, eventCards }) => {
+const Menu = ({ gameData, eventCards, productCards }) => {
     const { players } = gameData;
     const [showRulesModal, setShowRulesModal] = useState(false);
     const [showEventCardsModal, setShowEventCardsModal] = useState(false); // State for event cards modal
@@ -241,27 +241,48 @@ const Menu = ({ gameData, eventCards }) => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-            {/* Product Cards Modal */}
+
+
+            {/* Product list */}
             <Modal show={showProductCardsModal} onHide={handleCloseProductCardsModal} dialogClassName="modal-70w">
                 <Modal.Header closeButton>
                     <Modal.Title>Product Cards</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {/* Render negative cards */}
-                    <div className='p-2 mb-4 red-background'>
-                        <h3>All Product Cards</h3>
-
-                    </div>
-
+                    {/* Render product cards by sector */}
+                    {/* Render product cards by sector */}
+                    {gameData && gameData.sectors.map((sector) => (
+                        <div key={sector.pk} className="mb-4">
+                            <div className="p-2 mb-2 red-background">
+                                <h3>{sector.name}</h3>
+                            </div>
+                            <div className="row row-cols-1 row-cols-md-3">
+                                {productCards.filter(card => card.sector.pk === sector.pk).map((card) => (
+                                    <div key={card.pk} className="col mb-3">
+                                        <div className="card">
+                                            {/* Update the image src attribute */}
+                                            <img src={`img/${card.image}`} className="card-img-top" alt={card.name} />
+                                            <div className="card-body">
+                                                <h5 className="card-title">{card.name}</h5>
+                                                <p className="card-text">Description: {card.description}</p>
+                                                <p className="card-text">Price: ${card.buy_price}</p>
+                                                {/* Add more details as needed */}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
 
                 </Modal.Body>
-
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseProductCardsModal}>
                         Close
                     </Button>
                 </Modal.Footer>
             </Modal>
+
 
         </div>
     );

@@ -3,9 +3,10 @@ import Menu from '../components/Menu';
 import PrivozSector from '../components/PrivozSector';
 import gameBox from '../gamebox.json';
 import { Modal, Button } from 'react-bootstrap';
-import { takeEventCard, startEventCards, makeEventCardArray } from '../logic/traderLogic';
+import { takeEventCard, startEventCards, makeEventCardArray, startProductCards } from '../logic/traderLogic';
 
 import evcardQtyBase from "../evcardQty.json"; // Data with cards quantity
+import startProductData from "../startProductData.json"; // Data with cards quantity
 
 
 //import axios from 'axios'; // Import axios for making HTTP requests
@@ -20,7 +21,13 @@ const PrivozPage = () => {
 
     // Start event cards and store them in state
     const eventCardsArray = startEventCards(gameData, evcardQtyBase);
+    // Start product cards and store them in state
+    const productCardsArray = startProductCards(gameData, startProductData);
+
+    console.log('gameData', gameData);
+    console.log('productCardsArray', productCardsArray);
     const [eventCards, setEventCards] = useState(eventCardsArray); // Initialize state for event cards
+    const [productCards, setProductCards] = useState(productCardsArray); // Initialize state for products cards
 
     const [showUpdatedInfoModal, setShowUpdatedInfoModal] = useState(false);
 
@@ -35,9 +42,9 @@ const PrivozPage = () => {
         setShowUpdatedInfoModal(false);
     };
 
-
+    console.log('productCards', productCards);
     useEffect(() => {
-        if (phaseData == 2) {
+        if (phaseData === 2) {
             console.log('gameData prpage', gameData);
 
             console.log('eventCards', eventCards);
@@ -45,8 +52,9 @@ const PrivozPage = () => {
             console.log('currentUser', currentUser);
             console.log('gameData', gameData);
 
-            const eventCardArrayNext = makeEventCardArray(eventCards, setEventCards);
-            console.log('eventCardArrayNext', eventCardArrayNext);
+
+            //  const eventCardArrayNext = makeEventCardArray(eventCards, setEventCards);
+            // console.log('eventCardArrayNext', eventCardArrayNext);
             console.log('gameData prpage', gameData);
             // Introduce a delay before showing phase 2
             setTimeout(() => {
@@ -140,7 +148,7 @@ const PrivozPage = () => {
                     </div>
                 </div>
                 <div className="col-md-3">
-                    {gameData && <Menu gameData={gameData} eventCards={eventCards} />
+                    {gameData && <Menu gameData={gameData} eventCards={eventCards} productCards={productCards} />
                     }
                 </div>
             </div>

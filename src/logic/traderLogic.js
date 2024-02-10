@@ -28,7 +28,7 @@ const addTrader = (gameData, setGameData, sector, currentUser, phaseData, setPha
 
 
     // Check how many users have traders
-    const usersWithTraders = gameData.players.filter(player => player.traders && player.traders.length > 0);
+    //const usersWithTraders = gameData.players.filter(player => player.traders && player.traders.length > 0);
 
     // console.log('usersWithTraders:', usersWithTraders);
 
@@ -142,7 +142,6 @@ export const startEventCards = (gameData, qty) => {
 
 
 
-
 //Make new Event Cards in game active array
 export const makeEventCardArray = (eventCards, setEventCards) => {
     // Filter event cards with quantity > 0 and location "deck"
@@ -217,3 +216,18 @@ export const takeEventCard = (eventCards, setEventCards, currentUser, gameData, 
 
     }
 };
+
+// Make Active Product Cards
+export const startProductCards = (gameData, startProductData) => {
+    const productCardsWithQty = gameData.product_cards.map(card => {
+        const quantityObj = startProductData.find(item => item.pk === card.pk);
+        if (quantityObj) {
+            return { ...card, qty: quantityObj.qty };
+        } else {
+            return { ...card, qty: 10 }; // Default quantity value if not found in startProductData
+        }
+    });
+    return productCardsWithQty;
+};
+
+
